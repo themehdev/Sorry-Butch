@@ -1,4 +1,4 @@
-package AKInput;
+package XeroAKInput;
 
 import java.util.ArrayList;
 
@@ -48,8 +48,17 @@ final class AddInputIOInputs implements LoggableInputs{
         }
     }
 
+    private LogValue getValue(Enum value){
+        return new LogValue(value.name(), null);
+    }
 
     public int add(String name, Object value){
+        names.add(name);
+        values.add(getValue(value));
+        return names.size() - 1;
+    }
+
+    public int add(String name, Enum value){
         names.add(name);
         values.add(getValue(value));
         return names.size() - 1;
@@ -64,6 +73,22 @@ final class AddInputIOInputs implements LoggableInputs{
     }
 
     public boolean update(String name, Object value){
+        if(names.indexOf(name) == -1){
+            return false;
+        }
+        values.set(names.indexOf(name), getValue(value));
+        return true;
+    }
+
+    public boolean update(int idx, Enum value){
+        if(idx >= values.size()){
+            return false;
+        }
+        values.set(idx, getValue(value));
+        return true;
+    }
+
+    public boolean update(String name, Enum value){
         if(names.indexOf(name) == -1){
             return false;
         }
@@ -87,7 +112,7 @@ final class AddInputIOInputs implements LoggableInputs{
 }
 
 
-public class AKInput{
+public class XeroAKInput{
 
     private static ArrayList<String> sub_names = new ArrayList<String>();
     private static ArrayList<AddInputIOInputs> sub_inputs = new ArrayList<AddInputIOInputs>();
